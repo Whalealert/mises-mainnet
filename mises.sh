@@ -95,9 +95,6 @@ sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.000025umis\"/" $H
 # enable prometheus
 sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.misestm/config/config.toml
 
-# reset
-misestmd tendermint unsafe-reset-all --home $HOME/.misestm
-
 echo -e "\e[1m\e[32m4. Starting service... \e[0m" && sleep 1
 # create service
 sudo tee /etc/systemd/system/misestmd.service > /dev/null <<EOF
