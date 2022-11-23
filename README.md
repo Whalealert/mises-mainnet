@@ -5,11 +5,11 @@
 ### Spesifikasi Hardware :
 NODE  | CPU     | RAM      | SSD     |
 | ------------- | ------------- | ------------- | -------- |
-| Testnet | 4          | 8         | 200  |
+| Testnet | 4          | 32         | 1TB  |
 
 ### Install otomatis
 ```
-wget -O loyal.sh https://raw.githubusercontent.com/Whalealert/nodetutorial-testnet/main/loyal/loyal.sh && chmod +x loyal.sh && ./loyal.sh
+wget -O mises.sh https://raw.githubusercontent.com/Whalealert/mises-mainnet/main/mises.sh && chmod +x mises.sh && ./mises.sh
 ```
 ### Load variable ke system
 ```
@@ -17,16 +17,21 @@ source $HOME/.bash_profile
 ```
 ### Statesync by #Polkachu
 ```
-SNAP_RPC="https://loyal-testnet-rpc.polkachu.com:443"
-
-LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
-BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000)); \
-TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+read BLOCK_HASH BLOCK_HEIGHT < <(echo $(curl https://e1.mises.site:443/block -s | jq -r '.result.block_id.hash,.result.block.header.height')) 
 
 sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
-s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
+s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"http://e1.mises.site:26657,http://e2.mises.site:26657,http://w1.mises.site:26657,http://w2.mises.site:26657\"| ; \
 s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
-s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.loyal/config/config.toml
+s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$BLOCK_HASH\"|"  ~/.misestm/config/config.toml
+
+vi ~/.misestm/config/config.toml
+
+//you should see something like this in config.toml
+[statesync]
+enable = true
+rpc_servers = "https://e1.mises.site:443,https://e2.mises.site:443,https://w1.mises.site:443,https://w2.mises.site:443"
+trust_height = 38188  //should be the latest height
+trust_hash = "8AF6C7C7607A5C49ECCEB355DD82E8479922A1CDCD6D9F4F0E7C620A2259587F" //should be the latest hash
 
 loyald unsafe-reset-all
 systemctl restart loyald && journalctl -u loyald -f -o cat
@@ -35,102 +40,101 @@ systemctl restart loyald && journalctl -u loyald -f -o cat
 
    * cek sync node
 ```
-loyald status 2>&1 | jq .SyncInfo
+misestmd status 2>&1 | jq .SyncInfo
 ```
    * cek log node
 ```
-journalctl -fu loyald -o cat
+journalctl -fu misestmd -o cat
 ```
    * cek node info
 ```
-loyald status 2>&1 | jq .NodeInfo
+misestmd status 2>&1 | jq .NodeInfo
 ```
    * cek validator info
 ```
-loyald status 2>&1 | jq .ValidatorInfo
+misestmd status 2>&1 | jq .ValidatorInfo
 ```
   * cek node id
 ```
-loyald tendermint show-node-id
+misestmd tendermint show-node-id
 ```
 
 ### Membuat wallet
    * wallet baru
 ```
-loyald keys add $WALLET
+misestmd keys add $WALLET
 ```
    * recover wallet
 ```
-loyald keys add $WALLET --recover
+misestmd keys add $WALLET --recover
 ```
    * list wallet
 ```
-loyald keys list
+misestmd keys list
 ```
    * hapus wallet
 ```
-loyald keys delete $WALLET
+misestmd keys delete $WALLET
 ```
 ### Simpan informasi wallet
 ```
-LOYAL_WALLET_ADDRESS=$(loyald keys show $WALLET -a)
-LOYAL_VALOPER_ADDRESS=$(loyald keys show $WALLET --bech val -a)
-echo 'export LOYAL_WALLET_ADDRESS='${LOYAL_WALLET_ADDRESS} >> $HOME/.bash_profile
-echo 'export LOYAL_VALOPER_ADDRESS='${LOYAL_VALOPER_ADDRESS} >> $HOME/.bash_profile
+MISES_WALLET_ADDRESS=$(misestmd keys show $WALLET -a)
+MISES_VALOPER_ADDRESS=$(misestmd keys show $WALLET --bech val -a)
+echo 'export MISES_WALLET_ADDRESS='${MISES_WALLET_ADDRESS} >> $HOME/.bash_profile
+echo 'export MISES_VALOPER_ADDRESS='${MISES_VALOPER_ADDRESS} >> $HOME/.bash_profile
 source $HOME/.bash_profile
 ```
 
 ### Membuat validator
  * cek balance
 ```
-loyald query bank balances $LOYAL_WALLET_ADDRESS
+misestmd query bank balances $MISES_WALLET_ADDRESS
 ```
  * membuat validator
 ```
 loyald tx staking create-validator \
-  --amount 8000000ulyl \
+  --amount 1000000umis \
   --from $WALLET \
   --commission-max-change-rate "0.01" \
   --commission-max-rate "0.2" \
   --commission-rate "0.07" \
   --min-self-delegation "1" \
-  --pubkey  $(loyald tendermint show-validator) \
+  --pubkey  $(misestmd tendermint show-validator) \
   --moniker $NODENAME \
-  --fees 250ulyl \
-  --chain-id $LOYAL_CHAIN_ID
+  --fees 250umis \
+  --chain-id $MISES_CHAIN_ID
 ```
  * edit validator
 ```
-loyald tx staking edit-validator \
-  --new-moniker="nama-node" \
+misestmd tx staking edit-validator \
+  --moniker="nama-node" \
   --identity="<your_keybase_id>" \
   --website="<your_website>" \
   --details="<your_validator_description>" \
-  --chain-id=$LOYAL_CHAIN_ID \
-  --fees 250ulyl \
+  --chain-id=$MISES_CHAIN_ID \
+  --fees 250umis \
   --from=$WALLET
 ```
  ° unjail validator
 ```
-loyald tx slashing unjail \
+misestmd tx slashing unjail \
   --broadcast-mode=block \
   --from=$WALLET \
-  --chain-id=$LOYAL_CHAIN_ID \
-  --gas=auto \
-  --fees=250ulyl
+  --chain-id=$MISES_CHAIN_ID \
+  --fees=250umis
 ```
 ### Voting
 ```
-loyald tx gov vote 1 yes --from $WALLET --chain-id=$LOYAL_CHAIN_ID
+misestmd tx gov vote 1 yes --from $WALLET --chain-id=$MISES_CHAIN_ID
 ```
 ### Delegasi dan Rewards
   * delegasi
 ```
-loyald tx staking delegate $LOYAL_VALOPER_ADDRESS 1000000ulyl --from=$WALLET --chain-id=LOYAL_CHAIN_ID --fees=250ulyl
+misestmd tx staking delegate $MISES_VALOPER_ADDRESS 1000000umis --from=$WALLET --chain-id=MISES_CHAIN_ID --fees=250umis
 ```
   * withdraw reward
 ```
-loyald tx distribution withdraw-all-rewards --from=$WALLET --chain-id=$LOYAL_CHAIN_ID --fees=250ulyl
+misestmd tx distribution withdraw-all-rewards --from=$WALLET --chain-id=$MISES_CHAIN_ID --fees=250umis
 ```
   * withdraw reward beserta komisi
 ```
@@ -144,8 +148,8 @@ sudo systemctl disable misestmd && \
 rm /etc/systemd/system/misestmd.service && \
 sudo systemctl daemon-reload && \
 cd $HOME && \
-rm -rf loyal && \
+rm -rf mises-tm && \
 rm -rf mises.sh && \
-rm -rf .mises && \
+rm -rf .misestm && \
 rm -rf $(which misestmd)
 ```
