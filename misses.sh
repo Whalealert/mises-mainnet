@@ -17,11 +17,11 @@ if [ ! $NODENAME ]; then
 	read -p "Enter node name: " NODENAME
 	echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
 fi
-LOYAL_PORT=31
+MISES_PORT=36
 if [ ! $WALLET ]; then
 	echo "export WALLET=wallet" >> $HOME/.bash_profile
 fi
-echo "export MISES_CHAIN_ID=loyal-1" >> $HOME/.bash_profile
+echo "export MISES_CHAIN_ID=mainnet" >> $HOME/.bash_profile
 echo "export MISES_PORT=${MISES_PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
@@ -84,7 +84,7 @@ pruning="custom"
 pruning_keep_recent="100"
 pruning_keep_every="0"
 pruning_interval="50"
-sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.loyal/config/app.toml
+sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.misestm/config/app.toml
 sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.misestm/config/app.toml
 sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.misestm/config/app.toml
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.misestm/config/app.toml
@@ -102,12 +102,12 @@ echo -e "\e[1m\e[32m4. Starting service... \e[0m" && sleep 1
 # create service
 sudo tee /etc/systemd/system/misestmd.service > /dev/null <<EOF
 [Unit]
-Description=loyal
+Description=misestm
 After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which misestmd) start --home $HOME/.loyal
+ExecStart=$(which misestmd) start --home $HOME/.misestm
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
@@ -122,5 +122,5 @@ sudo systemctl enable misestmd
 sudo systemctl restart misestmd
 
 echo '=============== SETUP FINISHED ==================='
-echo -e 'To check logs: \e[1m\e[32mjournalctl -u loyald -f -o cat\e[0m'
-echo -e "To check sync status: \e[1m\e[32mcurl -s localhost:${LOYAL_PORT}657/status | jq .result.sync_info\e[0m"
+echo -e 'To check logs: \e[1m\e[32mjournalctl -u misestmd -f -o cat\e[0m'
+echo -e "To check sync status: \e[1m\e[32mcurl -s localhost:${MISES_PORT}657/status | jq .result.sync_info\e[0m"
