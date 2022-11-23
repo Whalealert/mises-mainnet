@@ -1,11 +1,11 @@
 <p align="center">
-  <img width="300" height="auto" src="https://user-images.githubusercontent.com/108969749/201538813-989e3a31-d21c-4bfe-8c6d-d8e30368a3fb.jpeg">
+  <img width="300" height="auto" src="https://user-images.githubusercontent.com/108969749/203468600-bd337c5d-70b2-46bd-8a56-bcc001a447db.jpeg">
 </p>
 
 ### Spesifikasi Hardware :
 NODE  | CPU     | RAM      | SSD     |
 | ------------- | ------------- | ------------- | -------- |
-| Testnet | 4          | 32         | 1TB  |
+| Mainnet | 4          | 32         | 1TB  |
 
 ### Install otomatis
 ```
@@ -33,8 +33,8 @@ rpc_servers = "https://e1.mises.site:443,https://e2.mises.site:443,https://w1.mi
 trust_height = 38188  //should be the latest height
 trust_hash = "8AF6C7C7607A5C49ECCEB355DD82E8479922A1CDCD6D9F4F0E7C620A2259587F" //should be the latest hash
 
-loyald unsafe-reset-all
-systemctl restart loyald && journalctl -u loyald -f -o cat
+misestmd unsafe-reset-all
+systemctl restart misestmd && journalctl -u misestmd -f -o cat
 ```
 ### Informasi node
 
