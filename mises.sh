@@ -55,7 +55,6 @@ echo -e "\e[1m\e[32m3. Downloading and building binaries... \e[0m" && sleep 1
 cd $HOME
 git clone https://github.com/mises-id/mises-tm/
 cd mises-tm/
-git checkout main
 make build
 make install
 
@@ -69,7 +68,7 @@ misestmd config node tcp://localhost:${MISES_PORT}657
 misestmd init $NODENAME --chain-id $MISES_CHAIN_ID
 
 # download genesis and addrbook
-wget -qO $HOME/.misestm/config/genesis.json "curl https://e1.mises.site:443/genesis | jq .result.genesis"
+curl https://e1.mises.site:443/genesis | jq .result.genesis > ~/.misestm/config/genesis.json
 
 # set peers and seeds
 PEERS=40a8318fa18fa9d900f4b0d967df7b1020689fa0@e1.mises.site:26656
