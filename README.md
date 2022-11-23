@@ -92,7 +92,7 @@ misestmd query bank balances $MISES_WALLET_ADDRESS
 ```
  * membuat validator
 ```
-loyald tx staking create-validator \
+misestmd tx staking create-validator \
   --amount 1000000umis \
   --from $WALLET \
   --commission-max-change-rate "0.01" \
