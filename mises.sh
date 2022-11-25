@@ -55,6 +55,7 @@ echo -e "\e[1m\e[32m3. Downloading and building binaries... \e[0m" && sleep 1
 cd $HOME
 git clone https://github.com/mises-id/mises-tm/
 cd mises-tm/
+git checkout 1.0.4
 make build
 make install
 
