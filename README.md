@@ -15,7 +15,7 @@ wget -O mises.sh https://raw.githubusercontent.com/Whalealert/mises-mainnet/main
 ```
 source $HOME/.bash_profile
 ```
-### Statesync by #Polkachu
+### Statesync
 ```
 read BLOCK_HASH BLOCK_HEIGHT < <(echo $(curl https://e1.mises.site:443/block -s | jq -r '.result.block_id.hash,.result.block.header.height')) 
 
