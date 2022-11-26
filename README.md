@@ -17,24 +17,7 @@ source $HOME/.bash_profile
 ```
 ### Statesync
 ```
-read BLOCK_HASH BLOCK_HEIGHT < <(echo $(curl https://e1.mises.site:443/block -s | jq -r '.result.block_id.hash,.result.block.header.height')) 
-
-sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
-s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"http://e1.mises.site:26657,http://e2.mises.site:26657,http://w1.mises.site:26657,http://w2.mises.site:26657\"| ; \
-s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
-s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$BLOCK_HASH\"|"  ~/.misestm/config/config.toml
-
-vi ~/.misestm/config/config.toml
-
-//you should see something like this in config.toml
-[statesync]
-enable = true
-rpc_servers = "https://e1.mises.site:443,https://e2.mises.site:443,https://w1.mises.site:443,https://w2.mises.site:443"
-trust_height = 38188  //should be the latest height
-trust_hash = "8AF6C7C7607A5C49ECCEB355DD82E8479922A1CDCD6D9F4F0E7C620A2259587F" //should be the latest hash
-
-misestmd unsafe-reset-all
-systemctl restart misestmd && journalctl -u misestmd -f -o cat
+N/A
 ```
 ### Informasi node
 
