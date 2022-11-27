@@ -17,12 +17,11 @@ if [ ! $NODENAME ]; then
 	read -p "Enter node name: " NODENAME
 	echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
 fi
-MISES_PORT=36
+
 if [ ! $WALLET ]; then
 	echo "export WALLET=wallet" >> $HOME/.bash_profile
 fi
 echo "export MISES_CHAIN_ID=mainnet" >> $HOME/.bash_profile
-echo "export MISES_PORT=${MISES_PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
 echo '================================================='
@@ -63,7 +62,6 @@ make install
 # config
 misestmd config chain-id $MISES_CHAIN_ID
 misestmd config keyring-backend test
-misestmd config node tcp://localhost:${MISES_PORT}657
 
 # init
 misestmd init $NODENAME --chain-id $MISES_CHAIN_ID
@@ -74,10 +72,6 @@ curl https://e1.mises.site:443/genesis | jq .result.genesis > ~/.misestm/config/
 # set peers and seeds
 PEERS=40a8318fa18fa9d900f4b0d967df7b1020689fa0@e1.mises.site:26656
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.misestm/config/config.toml
-
-# set custom ports
-sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${MISES_PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${MISES_PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${MISES_PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${MISES_PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${MISES_PORT}660\"%" $HOME/.misestm/config/config.toml
-sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${MISES_PORT}317\"%; s%^address = \":8080\"%address = \":${MISES_PORT}080\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${MISES_PORT}090\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${MISES_PORT}091\"%" $HOME/.misestm/config/app.toml
 
 # config pruning
 pruning="custom"
@@ -120,4 +114,3 @@ sudo systemctl restart misestmd
 
 echo '=============== SETUP FINISHED ==================='
 echo -e 'To check logs: \e[1m\e[32mjournalctl -u misestmd -f -o cat\e[0m'
-echo -e "To check sync status: \e[1m\e[32mcurl -s localhost:${MISES_PORT}657/status | jq .result.sync_info\e[0m"
