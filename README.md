@@ -113,7 +113,7 @@ misestmd tx gov vote 1 yes --from $WALLET --chain-id=$MISES_CHAIN_ID
 ### Delegasi dan Rewards
   * delegasi
 ```
-misestmd tx staking delegate $MISES_VALOPER_ADDRESS 1000000umis --from=$WALLET --chain-id=MISES_CHAIN_ID --fees=250umis
+misestmd tx staking delegate $MISES_VALOPER_ADDRESS 1000000umis --from=$WALLET --chain-id=$MISES_CHAIN_ID --fees=250umis
 ```
   * withdraw reward
 ```
