@@ -27,7 +27,7 @@ wget -O $HOME/.misestm/config/addrbook.json "https://raw.githubusercontent.com/W
 ```
 * Download peers
 ```
-PEERS="fb28bb1be09c72a685aeff7a2fafeb06e7cdae42@194.163.148.193:36657"
+PEERS="fb28bb1be09c72a685aeff7a2fafeb06e7cdae42@194.163.148.193:36657,87a3096f64fc1ccca93a7c99face66abfe14af71@116.202.236.115:20856,f83f2ff1254822df5891ed8f3dc2dda869e3e6fd@65.108.101.50:56656,917ec8e4c8acbd9fc6bb7dee865cd758f566febb@176.9.34.169:20006"
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.misestm/config/config.toml
 ```
 * Statesync
