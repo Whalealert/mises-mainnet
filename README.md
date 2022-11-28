@@ -2,6 +2,10 @@
   <img width="300" height="auto" src="https://user-images.githubusercontent.com/108969749/203468600-bd337c5d-70b2-46bd-8a56-bcc001a447db.jpeg">
 </p>
 
+
+<b>[Mises Explorer](https://explorer.whalealertid.xyz)
+ <> [Guide Official](https://https://www.mises.site/validator)
+<b/>
 ### Spesifikasi Hardware :
 NODE  | CPU     | RAM      | SSD     |
 | ------------- | ------------- | ------------- | -------- |
@@ -16,6 +20,7 @@ wget -O mises.sh https://raw.githubusercontent.com/Whalealert/mises-mainnet/main
 source $HOME/.bash_profile
 ```
 ### Statesync
+
 * Download addrbok
 ```
 wget -O $HOME/.misestm/config/addrbook.json "https://raw.githubusercontent.com/Whalealert/mises-mainnet/main/addrbook.json"
