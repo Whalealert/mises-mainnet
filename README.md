@@ -5,7 +5,7 @@
 
 <b>[Mises Explorer](https://explorer.whalealertid.xyz)
  <> [Guide Official](https://https://www.mises.site/validator)
-<b/>
+</b>
 ### Spesifikasi Hardware :
 NODE  | CPU     | RAM      | SSD     |
 | ------------- | ------------- | ------------- | -------- |
@@ -21,6 +21,11 @@ source $HOME/.bash_profile
 ```
 ### Statesync
 
+`Sebelum menggunakan cek versi nodenya !!`
+```
+misestmd version --long
+```
+> version 1.0.4
 * Download addrbok
 ```
 wget -O $HOME/.misestm/config/addrbook.json "https://raw.githubusercontent.com/Whalealert/mises-mainnet/main/addrbook.json"
