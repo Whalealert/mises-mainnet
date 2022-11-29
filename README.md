@@ -37,6 +37,10 @@ sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.m
 ```
 * Statesync
 ```
+sudo systemctl stop misestmd
+
+cp $HOME/.misestm/data/priv_validator_state.json $HOME/.misestm/priv_validator_state.json.backup
+misestmd tendermint unsafe-reset-all --home $HOME/.misestm --keep-addr-book
 SNAP_RPC="https://e1.mises.site:443"
 
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
