@@ -21,21 +21,6 @@ source $HOME/.bash_profile
 ```
 ### Statesync
 
-`Sebelum menggunakan cek versi nodenya !!`
-```
-misestmd version --long
-```
-> version 1.0.4
-* Download addrbok
-```
-wget -O $HOME/.misestm/config/addrbook.json "https://raw.githubusercontent.com/Whalealert/mises-mainnet/main/addrbook.json"
-```
-* Download peers
-```
-PEERS="fb28bb1be09c72a685aeff7a2fafeb06e7cdae42@194.163.148.193:36657"
-sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.misestm/config/config.toml
-```
-* Statesync
 ```
 sudo systemctl stop misestmd
 
