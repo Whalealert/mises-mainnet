@@ -26,7 +26,7 @@ sudo systemctl stop misestmd
 
 cp $HOME/.misestm/data/priv_validator_state.json $HOME/.misestm/priv_validator_state.json.backup
 misestmd tendermint unsafe-reset-all --home $HOME/.misestm --keep-addr-book
-SNAP_RPC="https://e1.mises.site:443"
+SNAP_RPC="https://e1.mises.site:443,rpc.gw.mises.site:443"
 
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
 BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000)); \
@@ -131,7 +131,7 @@ misestmd tx slashing unjail \
 ```
 ### Voting
 ```
-misestmd tx gov vote 1 yes --from $WALLET --chain-id=$MISES_CHAIN_ID
+misestmd tx gov vote 1 yes --from $WALLET --chain-id=$MISES_CHAIN_ID --fees=250umis
 ```
 ### Delegasi dan Rewards
   * delegasi
@@ -144,7 +144,7 @@ misestmd tx distribution withdraw-all-rewards --from=$WALLET --chain-id=$MISES_C
 ```
   * withdraw reward beserta komisi
 ```
-misestmd tx distribution withdraw-rewards $MISES_VALOPER_ADDRESS --from=$WALLET --commission --chain-id=$MISES_CHAIN_ID
+misestmd tx distribution withdraw-rewards $MISES_VALOPER_ADDRESS --from=$WALLET --commission --chain-id=$MISES_CHAIN_ID --fees=250umis
 ```
 
 ### Hapus node
