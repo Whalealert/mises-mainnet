@@ -70,8 +70,9 @@ misestmd init $NODENAME --chain-id $MISES_CHAIN_ID
 curl https://e1.mises.site:443/genesis | jq .result.genesis > ~/.misestm/config/genesis.json
 
 # set peers and seeds
-PEERS=1070b5c04c9b2af28aedf1b8cbeaf7e90b123464@rpc.gw.mises.site:36656
-sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.misestm/config/config.toml
+SEEDS_PEERS="1070b5c04c9b2af28aedf1b8cbeaf7e90b123464@rpc.gw.mises.site:36656"
+sed -i.bak -E "s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"$SEEDS_PEERS\"|"  ~/.misestm/config/config.toml
+sed -i.bak -E "s|^(persistent_peers[[:space:]]+=[[:space:]]+).*$|\1\"\"|"  ~/.misestm/config/config.toml
 
 # config pruning
 pruning="custom"
