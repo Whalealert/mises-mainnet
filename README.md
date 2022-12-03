@@ -40,9 +40,7 @@ s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
 s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.misestm/config/config.toml
 
 mv $HOME/.misestm/priv_validator_state.json.backup $HOME/.misestm/data/priv_validator_state.json
-
-sudo systemctl restart misestmd
-sudo journalctl -u misestmd -f --no-hostname -o cat
+sudo systemctl restart misestmd && sudo journalctl -u misestmd -f --no-hostname -o cat
 ```
 ### Informasi node
 
