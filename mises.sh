@@ -66,8 +66,11 @@ misestmd config keyring-backend test
 # init
 misestmd init $NODENAME --chain-id $MISES_CHAIN_ID
 
-# download genesis and addrbook
+# download genesis
 curl https://e1.mises.site:443/genesis | jq .result.genesis > ~/.misestm/config/genesis.json
+
+# download addrbook
+wget -O $HOME/.misestm/config/addrbook.json "https://raw.githubusercontent.com/Whalealert/mises-mainnet/main/addrbook.json"
 
 # set peers and seeds
 SEEDS_PEERS="1070b5c04c9b2af28aedf1b8cbeaf7e90b123464@rpc.gw.mises.site:36656"
