@@ -1,14 +1,6 @@
 #!/bin/bash
 
-echo -e "\031[0;33m"
-echo " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::";
-echo "  Jangan lupa berdoa sebelum memulai !...                             ";
-echo "  Twitter : https://twitter.com/dwentzart                             ";
-echo "  Github  : https://github.com/Whalealert                             ";
-echo "    -----------–------------------------------------                  ";
-echo "         .........SEMOGA MEMBANTU ...........                         ";
-echo " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::";
-echo -e "\e[0m"
+
 
 sleep 2
 
@@ -61,7 +53,7 @@ make install
 
 # config
 misestmd config chain-id $MISES_CHAIN_ID
-misestmd config keyring-backend test
+misestmd config keyring-backend file
 
 # init
 misestmd init $NODENAME --chain-id $MISES_CHAIN_ID
