@@ -3,9 +3,7 @@
 </p>
 
 
-<b>[Mises Explorer](https://explorer.whalealertid.xyz)
- <> [Guide Official](https://https://www.mises.site/validator)
-</b>
+
 ### Spesifikasi Hardware :
 NODE  | CPU     | RAM      | SSD     |
 | ------------- | ------------- | ------------- | -------- |
